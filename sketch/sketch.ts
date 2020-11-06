@@ -39,8 +39,13 @@ var sketch = (p: p5) => {
     }
     
     p.push();
-    p.rotateZ(t);
+    
+    p.rotateZ(t / 4);
+    p.rotateX(t / 4);
+    p.rotateY(t / 4);
 
+    p.translate(-10 * (cubeSize + offset) / 2, -10 * (cubeSize + offset) / 2, -10 * (cubeSize + offset) / 2);
+    
     for (x = 0; x < 10; x++) {
       for (y = 0; y < 10; y++) {
 
@@ -49,11 +54,12 @@ var sketch = (p: p5) => {
           p.fill(255);
 
           p.push();
-
+          
           p.translate(x * (cubeSize + offset), y * (cubeSize + offset), z * (cubeSize + offset));
           let evalValue = 1;
           try {
             evalValue = evaluatedFunction(x, y, z, t);
+
           }
           catch {
             evalValue = 1;
@@ -61,10 +67,10 @@ var sketch = (p: p5) => {
           let actualDimension = cubeSize * evalValue;
 
           if (actualDimension < 0) {
-            p.fill(255, 0, 0, 30);
+            p.fill(255, 0, 0, 50);
           }
           else {
-            p.fill(255, 30);
+            p.fill(255, 50);
           }
           
           p.box(actualDimension);
