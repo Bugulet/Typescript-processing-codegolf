@@ -47,6 +47,9 @@ var x, y, z;
 function sin(x) {
     return Math.sin(x);
 }
+function random() {
+    return Math.random();
+}
 var date = new Date();
 var time = date.getTime();
 var sketch = function (p) {
@@ -59,15 +62,24 @@ var sketch = function (p) {
     p.draw = function () {
         time = date.getTime();
         p.background(0);
-        var cubeSize = 10;
+        var cubeSize = 15;
         var offset = cubeSize / 2;
         var t = p.millis() / 1000;
+        var evaluatedFunction;
         try {
-            var evalstring = '(x,y,z,t)=>'.toString().concat(document.getElementById("codeInput").value.toString());
-            var evaluatedFunction = eval(evalstring);
+            var evalstring = document.getElementById("codeInput").value.toString();
+            if (evalstring.length > 0) {
+                evaluatedFunction = new Function('x', 'y', 'z', 't', "return " + evalstring + " ;");
+            }
+            else {
+                evaluatedFunction = new Function('return 1');
+            }
         }
-        finally {
+        catch (_a) {
+            evaluatedFunction = new Function('return 1');
         }
+        p.push();
+        p.rotateZ(t);
         for (x = 0; x < 10; x++) {
             for (y = 0; y < 10; y++) {
                 for (z = 0; z < 10; z++) {
@@ -77,23 +89,24 @@ var sketch = function (p) {
                     p.translate(x * (cubeSize + offset), y * (cubeSize + offset), z * (cubeSize + offset));
                     var evalValue = 1;
                     try {
-                        evalValue = evaluatedFunction();
+                        evalValue = evaluatedFunction(x, y, z, t);
                     }
-                    catch (_a) {
+                    catch (_b) {
                         evalValue = 1;
                     }
                     var actualDimension = cubeSize * evalValue;
                     if (actualDimension < 0) {
-                        p.fill(255, 0, 0, 10);
+                        p.fill(255, 0, 0, 30);
                     }
                     else {
-                        p.fill(255, 10);
+                        p.fill(255, 30);
                     }
                     p.box(actualDimension);
                     p.pop();
                 }
             }
         }
+        p.pop();
     };
 };
 var processingInstance = new p5(sketch, "processingInstance");

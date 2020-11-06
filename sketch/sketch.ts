@@ -1,7 +1,12 @@
 let x, y, z;
+
 function sin(x: number) {
   return Math.sin(x);
 }
+function random() {
+  return Math.random();
+}
+
 let date = new Date();
 let time = date.getTime();
 var sketch = (p: p5) => {
@@ -16,15 +21,29 @@ var sketch = (p: p5) => {
   p.draw = () => {
     time = date.getTime();
     p.background(0);
-    let cubeSize = 10;
+    let cubeSize = 15;
     let offset = cubeSize / 2;
     let t = p.millis() / 1000;
+    let evaluatedFunction;
     try {
-      let evalstring = '(x,y,z,t)=>'.toString().concat(document.getElementById("codeInput").value.toString());
-      let evaluatedFunction = eval(evalstring);
+      let evalstring =document.getElementById("codeInput").value.toString();
+      if (evalstring.length > 0) {
+        evaluatedFunction = new Function('x', 'y', 'z', 't', `return ${evalstring} ;`);
+      }
+      else {
+        evaluatedFunction = new Function('return 1');
+      }
     }
+    catch{
+      evaluatedFunction = new Function('return 1');
+    }
+    
+    p.push();
+    p.rotateZ(t);
+
     for (x = 0; x < 10; x++) {
       for (y = 0; y < 10; y++) {
+
         for (z = 0; z < 10; z++) {
           p.noStroke();
           p.fill(255);
@@ -34,7 +53,7 @@ var sketch = (p: p5) => {
           p.translate(x * (cubeSize + offset), y * (cubeSize + offset), z * (cubeSize + offset));
           let evalValue = 1;
           try {
-            evalValue = evaluatedFunction();
+            evalValue = evaluatedFunction(x, y, z, t);
           }
           catch {
             evalValue = 1;
@@ -42,11 +61,12 @@ var sketch = (p: p5) => {
           let actualDimension = cubeSize * evalValue;
 
           if (actualDimension < 0) {
-            p.fill(255, 0, 0, 10);
+            p.fill(255, 0, 0, 30);
           }
           else {
-            p.fill(255, 10);
+            p.fill(255, 30);
           }
+          
           p.box(actualDimension);
           p.pop();
         }
@@ -54,6 +74,7 @@ var sketch = (p: p5) => {
       }
 
     }
+    p.pop();
   };
 };
 
