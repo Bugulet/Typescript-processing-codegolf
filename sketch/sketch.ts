@@ -1,5 +1,6 @@
 let x, y, z;
-
+let width: number=100;
+let height: number = 100;
 function sin(x: number) {
   return Math.sin(x);
 }
@@ -13,16 +14,19 @@ var sketch = (p: p5) => {
 
   p.setup = () => {
     let context = document.getElementById("processingInstance");
-    let width: number = parseInt(context.style.width);
-    let height: number = parseInt(context.style.height);
+    width = context.clientWidth;
+    height = context.clientHeight;
     p.createCanvas(width, height, "webgl");
+
+    p.colorMode("hsb");
+
   };
 
   p.draw = () => {
     time = date.getTime();
     p.background(0);
-    let cubeSize = 15;
-    let offset = cubeSize / 2;
+    let cubeSize = ((width>height)?height:width)/40;
+    let offset = cubeSize *1.14;
     let t = p.millis() / 1000;
     let evaluatedFunction;
     try {
@@ -40,9 +44,9 @@ var sketch = (p: p5) => {
     
     p.push();
     
-    p.rotateZ(t / 4);
-    p.rotateX(t / 4);
-    p.rotateY(t / 4);
+    p.rotateZ(t/5 );
+    p.rotateX(t/5 );
+    p.rotateY(t/5 );
 
     p.translate(-10 * (cubeSize + offset) / 2, -10 * (cubeSize + offset) / 2, -10 * (cubeSize + offset) / 2);
     
@@ -64,16 +68,12 @@ var sketch = (p: p5) => {
           catch {
             evalValue = 1;
           }
-          let actualDimension = cubeSize * evalValue;
-
-          if (actualDimension < 0) {
-            p.fill(255, 0, 0, 50);
-          }
-          else {
-            p.fill(255, 50);
-          }
-          
-          p.box(actualDimension);
+          let actualDimension = Math.max(Math.min(evalValue, 1), -1) * cubeSize;
+          //p.ambientMaterial(255,255,255);
+          p.fill(p.map(actualDimension/cubeSize,-1,1,0,255),  255, 255);
+          //p.normalMaterial();
+          p.sphere(actualDimension);
+          //p.box(actualDimension);
           p.pop();
         }
 
@@ -82,6 +82,13 @@ var sketch = (p: p5) => {
     }
     p.pop();
   };
+
+  p.windowResized = () => {
+    let context = document.getElementById("processingInstance");
+    width = context.clientWidth;
+    height = context.clientHeight;
+    p.createCanvas(width, height, "webgl");
+  }
 };
 
 let processingInstance = new p5(sketch, "processingInstance");

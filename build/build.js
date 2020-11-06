@@ -44,6 +44,8 @@ var ColorHelper = (function () {
     return ColorHelper;
 }());
 var x, y, z;
+var width = 100;
+var height = 100;
 function sin(x) {
     return Math.sin(x);
 }
@@ -55,15 +57,16 @@ var time = date.getTime();
 var sketch = function (p) {
     p.setup = function () {
         var context = document.getElementById("processingInstance");
-        var width = parseInt(context.style.width);
-        var height = parseInt(context.style.height);
+        width = context.clientWidth;
+        height = context.clientHeight;
         p.createCanvas(width, height, "webgl");
+        p.colorMode("hsb");
     };
     p.draw = function () {
         time = date.getTime();
         p.background(0);
-        var cubeSize = 15;
-        var offset = cubeSize / 2;
+        var cubeSize = ((width > height) ? height : width) / 40;
+        var offset = cubeSize * 1.14;
         var t = p.millis() / 1000;
         var evaluatedFunction;
         try {
@@ -79,9 +82,9 @@ var sketch = function (p) {
             evaluatedFunction = new Function('return 1');
         }
         p.push();
-        p.rotateZ(t / 4);
-        p.rotateX(t / 4);
-        p.rotateY(t / 4);
+        p.rotateZ(t / 5);
+        p.rotateX(t / 5);
+        p.rotateY(t / 5);
         p.translate(-10 * (cubeSize + offset) / 2, -10 * (cubeSize + offset) / 2, -10 * (cubeSize + offset) / 2);
         for (x = 0; x < 10; x++) {
             for (y = 0; y < 10; y++) {
@@ -97,19 +100,20 @@ var sketch = function (p) {
                     catch (_b) {
                         evalValue = 1;
                     }
-                    var actualDimension = cubeSize * evalValue;
-                    if (actualDimension < 0) {
-                        p.fill(255, 0, 0, 50);
-                    }
-                    else {
-                        p.fill(255, 50);
-                    }
-                    p.box(actualDimension);
+                    var actualDimension = Math.max(Math.min(evalValue, 1), -1) * cubeSize;
+                    p.fill(p.map(actualDimension / cubeSize, -1, 1, 0, 255), 255, 255);
+                    p.sphere(actualDimension);
                     p.pop();
                 }
             }
         }
         p.pop();
+    };
+    p.windowResized = function () {
+        var context = document.getElementById("processingInstance");
+        width = context.clientWidth;
+        height = context.clientHeight;
+        p.createCanvas(width, height, "webgl");
     };
 };
 var processingInstance = new p5(sketch, "processingInstance");

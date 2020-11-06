@@ -1,32 +1,39 @@
 <html>
-  <head>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"
-      integrity="sha256-Pg1di+fBF53Rbh9oZR/FeD1xsFzTLC963lcac1D0ias="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/addons/p5.sound.min.js"
-      integrity="sha256-UySade9ZHGHdcdkTGEpftp/ZZbn9HYCe53RkvVFm9sM="
-      crossorigin="anonymous"
-    ></script>
 
-    <script src="build/build.js"></script>
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"
+    integrity="sha256-Pg1di+fBF53Rbh9oZR/FeD1xsFzTLC963lcac1D0ias=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/addons/p5.sound.min.js"
+    integrity="sha256-UySade9ZHGHdcdkTGEpftp/ZZbn9HYCe53RkvVFm9sM=" crossorigin="anonymous"></script>
 
-    <link rel="shortcut icon" href="https://p5js.org/assets/img/favicon.ico" />
-    <link rel="icon" href="https://p5js.org/assets/img/favicon.ico" />
 
-    <style>
-      * {
-        padding: 0px;
-        margin: 0px;
-      }
-    </style>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="https://p5js.org/assets/img/favicon.ico" />
+  <link rel="icon" href="https://p5js.org/assets/img/favicon.ico" />
+
+  <style>
+    * {
+      padding: 0px;
+      margin: 0px;
+
+    }
+
+    body {
+      background-color: #000000;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div style="margin: auto; width: 70vh; ">
+    <div id="processingInstance" style="height: 70vh;"></div>
     
-  </head>
+    <textarea type="text" id="codeInput" >sin(x+t)</textarea>
 
-  <body>
-    <div id="processingInstance" style="width: 800px; height: 800px;"></div>
-    <input type="text" id="codeInput">
-  </body>
+  </div>
+</body>
+
+<script src="build/build.js"></script>
+
 </html>
