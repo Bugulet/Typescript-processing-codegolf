@@ -24,3 +24,60 @@
 ::selection {
   background: rgb(141, 0, 0);
 }
+
+.onoffswitch {
+  position: relative;
+  width: 81px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.onoffswitch-checkbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.onoffswitch-label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  height: 19px;
+  padding: 0;
+  line-height: 19px;
+  border: 0px solid #FFFFFF;
+  border-radius: 28px;
+  background-color: #363636;
+}
+
+.onoffswitch-label:before {
+  content: "";
+  display: block;
+  width: 28px;
+  margin: -4.5px;
+  background: #FF7000;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 58px;
+  border-radius: 28px;
+}
+
+.onoffswitch-checkbox:checked+.onoffswitch-label {
+  background-color: #363636;
+}
+
+.onoffswitch-checkbox:checked+.onoffswitch-label,
+.onoffswitch-checkbox:checked+.onoffswitch-label:before {
+  border-color: #363636;
+}
+
+.onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-inner {
+  margin-left: 0;
+}
+
+.onoffswitch-checkbox:checked+.onoffswitch-label:before {
+  right: 0px;
+  background-color: #FF7000;
+}

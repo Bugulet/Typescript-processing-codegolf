@@ -28,8 +28,15 @@
 <body>
   <div style="margin: auto; width: 70vh; ">
     <div id="processingInstance" style="height: 70vh;"></div>
-    
-    <textarea type="text" id="codeInput" >sin(x+t)</textarea>
+
+    <textarea type="text" id="codeInput">sin(x+t)</textarea>
+
+    <!--rainbow/monochrome switch -->
+    <div class="onoffswitch">
+      <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" tabindex="0"
+        onclick="changeColorMode()">
+      <label class="onoffswitch-label" for="myonoffswitch"></label>
+    </div>
 
   </div>
 </body>

@@ -43,29 +43,47 @@ var ColorHelper = (function () {
     };
     return ColorHelper;
 }());
-var x, y, z;
-var width = 100;
-var height = 100;
+var ColorModes;
+(function (ColorModes) {
+    ColorModes[ColorModes["monochrome"] = 0] = "monochrome";
+    ColorModes[ColorModes["rainbow"] = 1] = "rainbow";
+})(ColorModes || (ColorModes = {}));
+var x = 0;
+var y = 0;
+var z = 0;
+var opacity = 0.8;
+var window_width = 100;
+var window_height = 100;
+var date = new Date();
+var time = date.getTime();
+var sketchColorMode = ColorModes.monochrome;
 function sin(x) {
     return Math.sin(x);
 }
 function random() {
     return Math.random();
 }
-var date = new Date();
-var time = date.getTime();
+function changeColorMode() {
+    sketchColorMode = document.getElementById("myonoffswitch").checked == false ? ColorModes.monochrome : ColorModes.rainbow;
+    console.log("color mode changed to " + sketchColorMode);
+}
 var sketch = function (p) {
     p.setup = function () {
         var context = document.getElementById("processingInstance");
-        width = context.clientWidth;
-        height = context.clientHeight;
-        p.createCanvas(width, height, "webgl");
-        p.colorMode("hsb");
+        window_width = context.clientWidth;
+        window_height = context.clientHeight;
+        p.createCanvas(window_width, window_height, "webgl");
     };
     p.draw = function () {
+        if (sketchColorMode == ColorModes.rainbow) {
+            p.colorMode("hsb");
+        }
+        else {
+            p.colorMode("rgb");
+        }
         time = date.getTime();
         p.background(0);
-        var cubeSize = ((width > height) ? height : width) / 40;
+        var cubeSize = ((window_width > window_height) ? window_height : window_width) / 40;
         var offset = cubeSize * 1.14;
         var t = p.millis() / 1000;
         var evaluatedFunction;
@@ -100,9 +118,20 @@ var sketch = function (p) {
                     catch (_b) {
                         evalValue = 1;
                     }
-                    var actualDimension = Math.max(Math.min(evalValue, 1), -1) * cubeSize;
-                    p.fill(p.map(actualDimension / cubeSize, -1, 1, 0, 255), 255, 255);
-                    p.sphere(actualDimension);
+                    var actualDimension = Math.max(Math.min(evalValue, 1), -1);
+                    var dimensionMapped = p.map(actualDimension, -1, 1, 0, 255);
+                    if (sketchColorMode == ColorModes.rainbow) {
+                        p.fill(dimensionMapped, 255, 255), opacity * 255;
+                    }
+                    else {
+                        if (actualDimension < 0) {
+                            p.fill(255 - dimensionMapped, 0, 0, opacity * 255);
+                        }
+                        else {
+                            p.fill(dimensionMapped, opacity * 255);
+                        }
+                    }
+                    p.sphere(actualDimension * cubeSize);
                     p.pop();
                 }
             }
@@ -111,9 +140,9 @@ var sketch = function (p) {
     };
     p.windowResized = function () {
         var context = document.getElementById("processingInstance");
-        width = context.clientWidth;
-        height = context.clientHeight;
-        p.createCanvas(width, height, "webgl");
+        window_width = context.clientWidth;
+        window_height = context.clientHeight;
+        p.createCanvas(window_width, window_height, "webgl");
     };
 };
 var processingInstance = new p5(sketch, "processingInstance");
