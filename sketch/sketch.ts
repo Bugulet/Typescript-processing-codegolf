@@ -1,4 +1,4 @@
-enum ColorModes{
+enum ColorModes {
   monochrome,
   rainbow
 }
@@ -17,12 +17,7 @@ let time = date.getTime();
 
 let sketchColorMode: ColorModes = ColorModes.monochrome;
 
-function sin(x: number) {
-  return Math.sin(x);
-}
-function random() {
-  return Math.random();
-}
+
 
 function changeColorMode() {
   sketchColorMode = (document.getElementById("myonoffswitch") as HTMLInputElement).checked == false ? ColorModes.monochrome : ColorModes.rainbow;
@@ -40,6 +35,7 @@ var sketch = (p: p5) => {
   };
 
   p.draw = () => {
+    p.orbitControl(); 
     if (sketchColorMode == ColorModes.rainbow) {
       p.colorMode("hsb");
     }
@@ -71,8 +67,9 @@ var sketch = (p: p5) => {
     p.rotateZ(t / 5);
     p.rotateX(t / 5);
     p.rotateY(t / 5);
-
-    p.translate(-10 * (cubeSize + offset) / 2, -10 * (cubeSize + offset) / 2, -10 * (cubeSize + offset) / 2);
+    
+    let cameraOffset:number= -10 * (cubeSize + offset) / 2;
+    p.translate(cameraOffset,cameraOffset,cameraOffset);
 
     for (x = 0; x < 10; x++) {
       for (y = 0; y < 10; y++) {
@@ -95,19 +92,19 @@ var sketch = (p: p5) => {
           let actualDimension = Math.max(Math.min(evalValue, 1), -1);
           let dimensionMapped = p.map(actualDimension, -1, 1, 0, 255)
           if (sketchColorMode == ColorModes.rainbow) {
-            p.fill(dimensionMapped, 255, 255),opacity*255;
+            p.fill(dimensionMapped, 255, 255), opacity * 255;
           }
           else {
-            
+
             if (actualDimension < 0) {
-              p.fill(255-dimensionMapped, 0, 0,opacity*255);
+              p.fill(255 - dimensionMapped, 0, 0, opacity * 255);
             }
             else {
-              p.fill(dimensionMapped,opacity*255);
+              p.fill(dimensionMapped, opacity * 255);
             }
           }
           //p.normalMaterial();
-          p.sphere(actualDimension*cubeSize);
+          p.sphere(actualDimension * cubeSize);
           //p.box(actualDimension);
           p.pop();
         }

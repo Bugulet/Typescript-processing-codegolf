@@ -57,12 +57,6 @@ var window_height = 100;
 var date = new Date();
 var time = date.getTime();
 var sketchColorMode = ColorModes.monochrome;
-function sin(x) {
-    return Math.sin(x);
-}
-function random() {
-    return Math.random();
-}
 function changeColorMode() {
     sketchColorMode = document.getElementById("myonoffswitch").checked == false ? ColorModes.monochrome : ColorModes.rainbow;
     console.log("color mode changed to " + sketchColorMode);
@@ -75,6 +69,7 @@ var sketch = function (p) {
         p.createCanvas(window_width, window_height, "webgl");
     };
     p.draw = function () {
+        p.orbitControl();
         if (sketchColorMode == ColorModes.rainbow) {
             p.colorMode("hsb");
         }
@@ -103,7 +98,8 @@ var sketch = function (p) {
         p.rotateZ(t / 5);
         p.rotateX(t / 5);
         p.rotateY(t / 5);
-        p.translate(-10 * (cubeSize + offset) / 2, -10 * (cubeSize + offset) / 2, -10 * (cubeSize + offset) / 2);
+        var cameraOffset = -10 * (cubeSize + offset) / 2;
+        p.translate(cameraOffset, cameraOffset, cameraOffset);
         for (x = 0; x < 10; x++) {
             for (y = 0; y < 10; y++) {
                 for (z = 0; z < 10; z++) {
