@@ -1,2 +1,2 @@
 # Typescript processing codegolf
- based on https://github.com/Gaweph/p5-typescript-starter
+ inspired by https://github.com/aemkei/tixy
