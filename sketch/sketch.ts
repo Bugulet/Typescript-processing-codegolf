@@ -35,7 +35,7 @@ var sketch = (p: p5) => {
   };
 
   p.draw = () => {
-    p.orbitControl(); 
+    p.orbitControl(5,5); 
     if (sketchColorMode == ColorModes.rainbow) {
       p.colorMode("hsb");
     }
@@ -52,7 +52,7 @@ var sketch = (p: p5) => {
     try {
       let evalstring = document.getElementById("codeInput").value.toString();
       if (evalstring.length > 0) {
-        evaluatedFunction = new Function('x', 'y', 'z', 't', `return ${evalstring} ;`);
+        evaluatedFunction = new Function('x', 'y', 'z','i', 't', `return ${evalstring} ;`);
       }
       else {
         evaluatedFunction = new Function('return 1');
@@ -63,10 +63,11 @@ var sketch = (p: p5) => {
     }
 
     p.push();
-
-    p.rotateZ(t / 5);
-    p.rotateX(t / 5);
-    p.rotateY(t / 5);
+    
+    //cube rotation
+    // p.rotateZ(t / 5);
+    // p.rotateX(t / 5);
+    // p.rotateY(t / 5);
     
     let cameraOffset:number= -10 * (cubeSize + offset) / 2;
     p.translate(cameraOffset,cameraOffset,cameraOffset);
@@ -75,6 +76,8 @@ var sketch = (p: p5) => {
       for (y = 0; y < 10; y++) {
 
         for (z = 0; z < 10; z++) {
+          let i=(z * 10 * 10) + (y * 10) + x;
+
           p.noStroke();
           p.fill(255);
 
@@ -83,7 +86,7 @@ var sketch = (p: p5) => {
           p.translate(x * (cubeSize + offset), y * (cubeSize + offset), z * (cubeSize + offset));
           let evalValue = 1;
           try {
-            evalValue = evaluatedFunction(x, y, z, t);
+            evalValue = evaluatedFunction(x, y, z,i, t);
 
           }
           catch {
@@ -97,10 +100,10 @@ var sketch = (p: p5) => {
           else {
 
             if (actualDimension < 0) {
-              p.fill(255 - dimensionMapped, 0, 0, opacity * 255);
+              p.fill(255, 127, 0, opacity * 255);
             }
             else {
-              p.fill(dimensionMapped, opacity * 255);
+              p.fill(0,136,255, opacity * 255);
             }
           }
           //p.normalMaterial();

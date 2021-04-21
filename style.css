@@ -21,6 +21,21 @@
     caret-color: rgb(255, 0, 0);
 }
 
+table.minimalistBlack {
+  text-align: left;
+  border-collapse: collapse;
+}
+table.minimalistBlack td, table.minimalistBlack th {
+  padding: 5px 5px;
+}
+table.minimalistBlack tbody td {
+  font-size: 13px;
+  color: #FFFFFF;
+}
+table.minimalistBlack tfoot td {
+  font-size: 14px;
+}
+
 ::selection {
   background: rgb(141, 0, 0);
 }

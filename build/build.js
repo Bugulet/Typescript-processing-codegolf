@@ -1,48 +1,3 @@
-var ColorHelper = (function () {
-    function ColorHelper() {
-    }
-    ColorHelper.getColorVector = function (c) {
-        return createVector(red(c), green(c), blue(c));
-    };
-    ColorHelper.rainbowColorBase = function () {
-        return [
-            color('red'),
-            color('orange'),
-            color('yellow'),
-            color('green'),
-            color(38, 58, 150),
-            color('indigo'),
-            color('violet')
-        ];
-    };
-    ColorHelper.getColorsArray = function (total, baseColorArray) {
-        var _this = this;
-        if (baseColorArray === void 0) { baseColorArray = null; }
-        if (baseColorArray == null) {
-            baseColorArray = ColorHelper.rainbowColorBase();
-        }
-        var rainbowColors = baseColorArray.map(function (x) { return _this.getColorVector(x); });
-        ;
-        var colours = new Array();
-        for (var i = 0; i < total; i++) {
-            var colorPosition = i / total;
-            var scaledColorPosition = colorPosition * (rainbowColors.length - 1);
-            var colorIndex = Math.floor(scaledColorPosition);
-            var colorPercentage = scaledColorPosition - colorIndex;
-            var nameColor = this.getColorByPercentage(rainbowColors[colorIndex], rainbowColors[colorIndex + 1], colorPercentage);
-            colours.push(color(nameColor.x, nameColor.y, nameColor.z));
-        }
-        return colours;
-    };
-    ColorHelper.getColorByPercentage = function (firstColor, secondColor, percentage) {
-        var firstColorCopy = firstColor.copy();
-        var secondColorCopy = secondColor.copy();
-        var deltaColor = secondColorCopy.sub(firstColorCopy);
-        var scaledDeltaColor = deltaColor.mult(percentage);
-        return firstColorCopy.add(scaledDeltaColor);
-    };
-    return ColorHelper;
-}());
 var ColorModes;
 (function (ColorModes) {
     ColorModes[ColorModes["monochrome"] = 0] = "monochrome";
@@ -69,7 +24,7 @@ var sketch = function (p) {
         p.createCanvas(window_width, window_height, "webgl");
     };
     p.draw = function () {
-        p.orbitControl();
+        p.orbitControl(5, 5);
         if (sketchColorMode == ColorModes.rainbow) {
             p.colorMode("hsb");
         }
@@ -85,7 +40,7 @@ var sketch = function (p) {
         try {
             var evalstring = document.getElementById("codeInput").value.toString();
             if (evalstring.length > 0) {
-                evaluatedFunction = new Function('x', 'y', 'z', 't', "return " + evalstring + " ;");
+                evaluatedFunction = new Function('x', 'y', 'z', 'i', 't', "return " + evalstring + " ;");
             }
             else {
                 evaluatedFunction = new Function('return 1');
@@ -95,21 +50,19 @@ var sketch = function (p) {
             evaluatedFunction = new Function('return 1');
         }
         p.push();
-        p.rotateZ(t / 5);
-        p.rotateX(t / 5);
-        p.rotateY(t / 5);
         var cameraOffset = -10 * (cubeSize + offset) / 2;
         p.translate(cameraOffset, cameraOffset, cameraOffset);
         for (x = 0; x < 10; x++) {
             for (y = 0; y < 10; y++) {
                 for (z = 0; z < 10; z++) {
+                    var i = (z * 10 * 10) + (y * 10) + x;
                     p.noStroke();
                     p.fill(255);
                     p.push();
                     p.translate(x * (cubeSize + offset), y * (cubeSize + offset), z * (cubeSize + offset));
                     var evalValue = 1;
                     try {
-                        evalValue = evaluatedFunction(x, y, z, t);
+                        evalValue = evaluatedFunction(x, y, z, i, t);
                     }
                     catch (_b) {
                         evalValue = 1;
@@ -121,10 +74,10 @@ var sketch = function (p) {
                     }
                     else {
                         if (actualDimension < 0) {
-                            p.fill(255 - dimensionMapped, 0, 0, opacity * 255);
+                            p.fill(255, 127, 0, opacity * 255);
                         }
                         else {
-                            p.fill(dimensionMapped, opacity * 255);
+                            p.fill(0, 136, 255, opacity * 255);
                         }
                     }
                     p.sphere(actualDimension * cubeSize);

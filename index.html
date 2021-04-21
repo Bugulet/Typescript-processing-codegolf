@@ -28,14 +28,38 @@
 <body>
   <div style="margin: auto; width: 70vh; ">
     <div id="processingInstance" style="height: 70vh;"></div>
+    <br>
+    <h1 style="color: #ff7700; font-family: Arial, Helvetica, sans-serif; font-size: 1em; ">You can also rotate the cube by clicking and dragging</h1>
+    <h1 style="color: rgb(182, 182, 182); font-family: Arial, Helvetica, sans-serif; font-size: 1em; ">use x, y, z, i (index) and t (time) to make something nice</h1>
+    <br>
 
-    <textarea type="text" id="codeInput">sin(x+t)</textarea>
-
+    <textarea type="text" id="codeInput">sin((x+y+z)/3+t*3)</textarea>
+    
+    <h1>oops</h1>
+    <h1 style="color: rgb(182, 182, 182); font-family: Arial, Helvetica, sans-serif; font-size: 1em; ">Color switch</h1>
+    <br>
     <!--rainbow/monochrome switch -->
     <div class="onoffswitch">
       <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" tabindex="0"
         onclick="changeColorMode()">
       <label class="onoffswitch-label" for="myonoffswitch"></label>
+    </div>
+    <br>
+    <div style="color:rgb(182, 182, 182) ; font-family: Arial, Helvetica, sans-serif; font-size: 1em;">
+      Some cool formulas to check out
+      <br>
+
+      <table class="minimalistBlack">
+        <tbody>
+        <tr>
+        <td>Sphere</td><td>sin(sqrt((x-4.5)**2+(y-4.5)**2+(z-4.5)**2)+t*3)</td></tr>
+        <tr>
+        <td>Binary Clock</td><td>t&(1&lt;&lt;x)&&y==5&&z==5</td></tr>
+        <tr>
+        <td>Corner fade</td><td>sin((x-y-z)/10+t)</td></tr>
+        </tbody>
+        </tr>
+        </table>
     </div>
 
   </div>
