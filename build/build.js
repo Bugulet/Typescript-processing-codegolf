@@ -77,7 +77,7 @@ var sketch = function (p) {
                             p.fill(255, 127, 0, opacity * 255);
                         }
                         else {
-                            p.fill(0, 136, 255, opacity * 255);
+                            p.fill(255, 255, 255, opacity * 255);
                         }
                     }
                     p.sphere(actualDimension * cubeSize);
