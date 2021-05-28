@@ -74,10 +74,10 @@ var sketch = function (p) {
                     }
                     else {
                         if (actualDimension < 0) {
-                            p.fill(255, 127, 0, opacity * 255);
+                            p.fill(255, 127, 0);
                         }
                         else {
-                            p.fill(255, 255, 255, opacity * 255);
+                            p.fill(255, 255, 255);
                         }
                     }
                     p.sphere(actualDimension * cubeSize);
